@@ -25,7 +25,32 @@
 <script>
     document.querySelector("#div2 p").addEventListener('click',function(){
         alert("div2");
-    })
+    });
+
+    // Opcion 1 -innerHTML
+    /*document.querySelector("#div1").innerHTML=`<p onclick="alert('div1')">Hola</p>`;
+    document.querySelector("#div2").innerHTML=`<p>Hola</p>`;
+    // IMPORTANTE: VOLVER A AGREGAR EL LISTENER
+    document.querySelector("#div2 p").addEventListener('click',function (){
+        alert("div2");
+    })*/
+
+    //Opcion 2 - Nodes
+    const div1 = document.querySelector("#div1");
+    const fillsDiv1 = div1.children; //hijos directos
+    // const fillsDiv1_2 = div1.childNodes; // todos los nodes que cuelgan (hijos, nietos etc)
+
+    div1.removeChild(fillsDiv1[1]);
+
+    const div2 = document.querySelector("#div2");
+    const fillsDiv2 = div2.children;
+
+    div2.removeChild(fillsDiv2[1]);
+
+    console.log(fillsDiv1, fillsDiv2);
+
+
+
 </script>
 <script>
     // Tots els elements amd la classe "groc" siguin de color "groc"
@@ -37,16 +62,16 @@
 
     //El darrer element amd la classe vermell de color "vermell"
     //document.querySelector(".vermell:last-child").style.color = "red";
-    const vermell = document.querySelectorAll(".vermell");
-    vermell.item(vermell.length -1).style.color = "red";
+    //const vermell = document.querySelectorAll(".vermell");
+    //vermell.item(vermell.length -1).style.color = "red";
 
     //L'element amb la classe "groc" i "vermell" de color "verd"
-    const grocVermell = document.querySelector(".groc.vermell");
-    grocVermell.style.color = "green";
+    //const grocVermell = document.querySelector(".groc.vermell");
+    //grocVermell.style.color = "green";
 
 
     //El segon element que tengui la propietat "class" de color "rosa"
-    document.querySelector('[class]:nth-child(2)').style.color = "pink"
+    //document.querySelector('[class]:nth-child(2)').style.color = "pink"
 
 
 </script>
