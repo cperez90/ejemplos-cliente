@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app"></div>
+<script>
+    function init(){
+        const  app = document.querySelector('#app');
+        const buttonPlay = document.createElement('BUTTON');
+        buttonPlay.innerText = "Play";
+        buttonPlay.addEventListener('click',function (){
+            const countDown = setInterval(function (){
+                let valor = parseInt(result.innerHTML);
+                valor++;
+
+                result.innerHTML = valor;
+
+            },1000)
+        });
+        const buttonReset = document.createElement('BUTTON');
+        buttonReset.innerText = "Reset";
+        const  result = document.createElement('P');
+
+        app.appendChild(result);
+        app.appendChild(buttonPlay);
+        app.appendChild(buttonReset);
+
+    }
+    function cron(){
+
+    }
+    init()
+</script>
+</body>
+</html>

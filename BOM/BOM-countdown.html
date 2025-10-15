@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BOM</title>
+</head>
+<body>
+<div id="app"></div>
+<script>
+    function init(){
+        const  app = document.querySelector('#app');
+        const  input = document.createElement('input');
+        input.type='number';
+        input.addEventListener('input',function () {
+            document.querySelector('p').innerText= input.value;
+        })
+        const buttonGo = document.createElement('BUTTON');
+        buttonGo.innerText = "Go";
+        buttonGo.addEventListener('click',function (){
+            const countDown = setInterval(function (){
+                let valor = parseInt(result.innerHTML);
+                valor--;
+
+                if (valor === 0){
+                    valor = "SORPRESA"
+                    clearInterval(countDown);
+                }
+
+                result.innerHTML = valor;
+
+            },1000)
+        })
+        const  result = document.createElement('P');
+        app.appendChild(input);
+        app.appendChild(buttonGo)
+        app.appendChild(result);
+    }
+    init()
+</script>
+</body>
+</html>
