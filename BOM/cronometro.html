@@ -7,30 +7,59 @@
 <body>
 <div id="app"></div>
 <script>
-    function init(){
+
+    //Serveis
+    function startCrono(cronoInterval){
+        const startTime = new Date();
+        cronoInterval = setInterval(function () {
+            const currentTime = new Date();
+            const diffTime = currentTime - startTime; //todo Mil.lisegons
+
+            //Pintar cronometre
+            pintarCronometre(diffTime)
+        },50)
+    }
+
+    function resetCrono(){
+        clearInterval();
+        pintarCronometre(0);
+    }
+
+    //Vista
+    function pintarCronometre(ms){
+        const segons = Math.floor(ms /1000);
+        const mili = ms % 1000;
+
+        document.querySelector("#crono").innerHTML=`00:${segons},${mili}`;
+    }
+
+    function pintarScreen(){
         const  app = document.querySelector('#app');
-        const buttonPlay = document.createElement('BUTTON');
-        buttonPlay.innerText = "Play";
-        buttonPlay.addEventListener('click',function (){
-            const countDown = setInterval(function (){
-                let valor = parseInt(result.innerHTML);
-                valor++;
 
-                result.innerHTML = valor;
+        const  crono = document.createElement('P');
+        crono.id = "crono";
 
-            },1000)
-        });
+        const buttonStart = document.createElement('BUTTON');
+        buttonStart.innerText = "Start";
+        buttonStart.addEventListener('click',startCrono,interval);
+
+        const buttonPause = document.createElement('BUTTON');
+        buttonPause.innerText = "Pause";
+
         const buttonReset = document.createElement('BUTTON');
         buttonReset.innerText = "Reset";
-        const  result = document.createElement('P');
+        buttonReset.addEventListener('click',resetCrono);
 
-        app.appendChild(result);
-        app.appendChild(buttonPlay);
+        app.appendChild(crono);
+        app.appendChild(buttonStart)
+        app.appendChild(buttonPause);
         app.appendChild(buttonReset);
-
     }
-    function cron(){
 
+    //init
+    function init(){
+        let interval;
+        pintarScreen();
     }
     init()
 </script>
