@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Piedra Papel Tijeras</title>
+</head>
+<body>
+<div id="app"></div>
+<script>
+    //MODEL
+    const OPCIONES = ['piedra','papel','tijeras'];
+    //SERVEIS
+    function getRndInteger(min,max){
+        return Math.floor(Math.random()* (max -min +1)) + min;
+    }
+
+    /*
+    * 0 = empate
+    * 1 = ganar
+    * -1 perder
+    */
+    function play(player, machine){
+        if (player === machine){
+            return 0;
+        }else if(
+            (player === 'piedra' && machine === 'tijeras') ||
+            (player === 'papel' && machine === 'piedra') ||
+            (player === 'tijeras' && machine === 'papel')
+        ){
+            return 1;
+        }
+        return -1;
+    }
+    //VISTA
+    function askPlayer(){
+        let isValid = false;
+        let choice;
+        while (!isValid){
+            choice = prompt("Elije: Piedra / Papel / Tijeras");
+            if (!OPCIONES.includes(choice.toLowerCase())){
+                alert(("Has de elegir una opcion valida"))
+            }else {
+                isValid = true;
+            }
+        }
+
+        return choice.toLowerCase();
+        // TODO: ...
+    }
+
+    function  askMachine(){
+        const random = getRndInteger(0,OPCIONES.length-1);
+        return OPCIONES[random];
+    }
+
+    function paintResult(player,machine,result){
+        console.log(player,machine,result);
+        const app = document.querySelector('#app');
+        const imgPlayer = document.createElement('IMG')
+        imgPlayer.src = './assets/'+imgHand(player);
+        imgPlayer.style.width='300px';
+
+        const imgMachine = document.createElement('IMG')
+        imgPlayer.src = './assets/'+imgHand(machine);
+        imgPlayer.style.width='300px';
+
+        app.appendChild(imgPlayer);
+        app.appendChild(imgMachine);
+    }
+
+    function imgHand(hand){
+        let img;
+        if (hand==='piedra'){
+            img = 'hand0.png';
+        }else if (hand === 'papel'){
+            img = 'hand5.png';
+        }else if(hand === 'tijeras'){
+            img = 'hand2.png';
+        }
+        return img;
+    }
+
+    //INIT
+    function init(){
+        const player = askPlayer();
+        const machine = askMachine();
+        const game = play(player,machine);
+        paintResult(player,machine,game)
+    }
+    init();
+</script>
+</body>
+</html>
