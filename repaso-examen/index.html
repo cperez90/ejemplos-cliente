@@ -56,16 +56,53 @@
     function paintResult(player,machine,result){
         console.log(player,machine,result);
         const app = document.querySelector('#app');
-        const imgPlayer = document.createElement('IMG')
-        imgPlayer.src = './assets/'+imgHand(player);
+        const imgPlayer = document.createElement('IMG');
+        const handPlayer = imgHand(player);
+        imgPlayer.src = './assets/'+handPlayer;
         imgPlayer.style.width='300px';
+        imgPlayer.addEventListener('mouseover', () => {
+            imgPlayer.src = './assets/hand5.png';
+        });
+        imgPlayer.addEventListener('mouseout', () => {
+            imgPlayer.src = './assets/'+handPlayer;
+        });
 
-        const imgMachine = document.createElement('IMG')
-        imgMachine.src = './assets/'+imgHand(machine);
+        const imgMachine = document.createElement('IMG');
+        const handMachine = imgHand(machine);
+        imgMachine.src = './assets/'+handMachine;
         imgMachine.style.width='300px';
+        imgMachine.addEventListener('mouseover', () => {
+            imgMachine.src = './assets/hand5.png';
+        });
+        imgMachine.addEventListener('mouseout', () => {
+            imgMachine.src = './assets/'+handMachine;
+        });
+
+
+        let helpW
+        const windowsNew = document.createElement('BUTTON');
+        windowsNew.innerText = 'ayuda';
+        windowsNew.addEventListener('click', () => {
+           helpW = window.open("","helpW","width=600, height=400");
+        });
+
+        const windowsClose = document.createElement('BUTTON');
+        windowsClose.innerText = 'cerrar ayuda';
+        windowsClose.addEventListener('click', () => {
+            helpW.close();
+        })
+
+        const windowPoli = document.createElement('BUTTON');
+        windowPoli.innerText = 'Politecnic';
+        windowPoli.addEventListener('click', () => {
+            window.open('https://politecnicllevant.cat');
+        });
 
         app.appendChild(imgPlayer);
         app.appendChild(imgMachine);
+        app.appendChild(windowsNew);
+        app.appendChild(windowsClose);
+        app.appendChild(windowPoli);
     }
 
     function imgHand(hand){
