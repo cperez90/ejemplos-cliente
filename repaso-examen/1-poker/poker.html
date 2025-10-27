@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Poker</title>
+</head>
+
+<body>
+<div id="app"></div>
+<script>
+    var numeros = ['ace','2','3','4','5','6','7','8','9','10','jack','queen','king'];
+    var pals = ['spades','diamonds','hearts','clubs'];
+
+    function Card(numero, pal){
+        this.numero = numero;
+        this.pal = pal;
+    }
+
+    function parella(ma){
+        for(var i=0; i<ma.length; i++){
+            for(var j= i+1; j<ma.length; j++){
+                if(ma[i].numero === ma[j].numero){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    function jugar(){
+        var baralla = [];
+        var jugador = [];
+
+        //Baralla amb 52 cartes
+        for(var i=0; i<pals.length; i++){
+            for(var j=0; j<numeros.length; j++){
+                baralla.push(new Card(numeros[j],pals[i]));
+            }
+        }
+
+        /*
+        > 0 a > b
+        < 0 a < b
+        = 0 a = b
+         */
+        baralla.sort(function(){
+            /*
+            0.8 - 0.5 > 0
+            0.4 - 0.5 < 0
+             */
+            return Math.random() - 0.5;
+        });
+
+        //Repartim
+        for(var i=0; i < 5; i++){
+            jugador.push(baralla[i]);
+        }
+
+        //Pintam
+        var app = document.querySelector("#app");
+        app.innerHTML = "<button onclick=\"jugar()\">Play!</button>";
+
+        for(var i=0; i<jugador.length; i++){
+            var carta = jugador[i].numero+"_of_"+jugador[i].pal+".png";
+            app.innerHTML += '<img style="width:100px" src="cards/'+ carta+'">';
+        }
+
+        //Comprovació de guanyar
+        if(parella(jugador)){
+            app.innerHTML += '<p>Has guanyat amb Parella</p>';
+        }
+
+    }
+
+    jugar();
+</script>
+</body>
+</html>
