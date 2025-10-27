@@ -9,17 +9,17 @@
 <body>
 <div id="app"></div>
 <script>
-    var numeros = ['ace','2','3','4','5','6','7','8','9','10','jack','queen','king'];
-    var pals = ['spades','diamonds','hearts','clubs'];
 
+    // MODEL
     function Card(numero, pal){
         this.numero = numero;
         this.pal = pal;
     }
 
+    //SERVICE
     function parella(ma){
-        for(var i=0; i<ma.length; i++){
-            for(var j= i+1; j<ma.length; j++){
+        for(let i=0; i<ma.length; i++){
+            for(let j= i+1; j<ma.length; j++){
                 if(ma[i].numero === ma[j].numero){
                     return true;
                 }
@@ -28,17 +28,24 @@
         return false;
     }
 
-    function jugar(){
-        var baralla = [];
-        var jugador = [];
+    function jugar(jugada){
+        return parella(jugada);
+    }
+
+    function  initBaralla(pals,numeros){
+        const baralla = [];
 
         //Baralla amb 52 cartes
-        for(var i=0; i<pals.length; i++){
-            for(var j=0; j<numeros.length; j++){
+        for(let i=0; i<pals.length; i++){
+            for(let j=0; j<numeros.length; j++){
                 baralla.push(new Card(numeros[j],pals[i]));
             }
         }
 
+        return baralla;
+    }
+
+    function repartitCartes(baralla){
         /*
         > 0 a > b
         < 0 a < b
@@ -51,29 +58,50 @@
              */
             return Math.random() - 0.5;
         });
-
-        //Repartim
-        for(var i=0; i < 5; i++){
+        //Repartir
+        const jugador = [];
+        for(let i=0; i < 5; i++){
             jugador.push(baralla[i]);
         }
 
-        //Pintam
-        var app = document.querySelector("#app");
-        app.innerHTML = "<button onclick=\"jugar()\">Play!</button>";
-
-        for(var i=0; i<jugador.length; i++){
-            var carta = jugador[i].numero+"_of_"+jugador[i].pal+".png";
-            app.innerHTML += '<img style="width:100px" src="cards/'+ carta+'">';
-        }
-
-        //Comprovació de guanyar
-        if(parella(jugador)){
-            app.innerHTML += '<p>Has guanyat amb Parella</p>';
-        }
-
+        return jugador;
     }
 
-    jugar();
+    //PINTAR
+    function pintarPoker(jugador){
+
+        //Pintam
+        const app = document.querySelector("#app");
+        app.innerHTML = "<button onclick=\"init()\">Play!</button>";
+
+        for(let i=0; i<jugador.length; i++){
+            let carta = jugador[i].numero+"_of_"+jugador[i].pal+".png";
+            app.innerHTML += '<img style="width:100px" src="assets/cards/'+ carta+'">';
+        }
+
+        app.innerHTML += '<p id="resultat"></p>';
+    }
+
+    function  pintarResultat(isWin){
+        if (isWin){
+            document.querySelector("#resultat").innerHTML='<p>Has guanyat amb Parella</p>'
+        }else {
+            document.querySelector('#resultat').innerHTML= '<p>Has perdut</p>'
+        }
+    }
+
+    function  init(){
+        const numeros = ['ace','2','3','4','5','6','7','8','9','10','jack','queen','king'];
+        const pals = ['spades','diamonds','hearts','clubs'];
+        const baralla = initBaralla(pals,numeros);
+        console.log("Baralla", baralla);
+        const jugada = repartitCartes(baralla);
+        console.log("Jugada",jugada);
+        pintarPoker(jugada);
+        pintarResultat(jugar(jugada));
+
+    }
+    init();
 </script>
 </body>
 </html>
