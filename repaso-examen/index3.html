@@ -137,6 +137,24 @@
         const resetButton = document.createElement("button");
         resetButton.textContent = "Reiniciar joc";
         resetButton.addEventListener("click", reiniciarJoc);
+
+        // Botones extra
+        let helpW;
+        const btnHelp = document.createElement("button");
+        btnHelp.textContent = "Ayuda";
+        btnHelp.onclick = () => helpW = window.open("", "helpW", "width=600,height=400");
+
+        const btnClose = document.createElement("button");
+        btnClose.textContent = "Cerrar ayuda";
+        btnClose.onclick = () => helpW && helpW.close();
+
+        const btnPoli = document.createElement("button");
+        btnPoli.textContent = "Politecnic";
+        btnPoli.onclick = () => window.open("https://politecnicllevant.cat");
+
+        app.appendChild(btnHelp);
+        app.appendChild(btnClose);
+        app.appendChild(btnPoli);
         app.appendChild(resetButton);
 
         // Crear tabla vacía
@@ -155,92 +173,6 @@
         playButton.addEventListener("click", () => {
             if (currentMode === "prompt") jugarPrompt();
         });
-    }
-
-    function paintUI(OPCIONES) {
-        const app = document.querySelector('#app');
-        app.innerHTML = ""; // limpiar contenido previo solo una vez
-
-        const title = document.createElement("h2");
-        title.textContent = "Mode de joc: Pedra, Paper o Tisores";
-        app.appendChild(title);
-
-        const label = document.createElement("label");
-        label.textContent = "Selecciona el mode: ";
-
-        const select = document.createElement("select");
-        select.id = "mode";
-
-        const optPrompt = document.createElement("option");
-        optPrompt.value = "prompt";
-        optPrompt.textContent = "Prompt";
-
-        const optTeclat = document.createElement("option");
-        optTeclat.value = "teclat";
-        optTeclat.textContent = "Teclat";
-
-        select.appendChild(optPrompt);
-        select.appendChild(optTeclat);
-        label.appendChild(select);
-        app.appendChild(label);
-
-        select.addEventListener("change", (event) => {
-            currentMode = event.target.value;
-            resultP.textContent =
-                currentMode === "prompt"
-                    ? "Mode Prompt seleccionat"
-                    : "Mode Teclat (prem R, P o S)";
-        });
-
-        const playButton = document.createElement("button");
-        playButton.textContent = "Jugar amb Prompt";
-        playButton.addEventListener("click", () => {
-            if (currentMode === "prompt") {
-                const player = askPlayer(OPCIONES);
-                const machine = askMachine(OPCIONES);
-                const result = play(player, machine);
-                paintResult(player, machine, result);
-            } else {
-                resultP.textContent = "Estàs en mode Teclat! Usa R, P o S.";
-            }
-        });
-        app.appendChild(playButton);
-
-        // Zona de resultat
-        window.resultP = document.createElement("p");
-        resultP.textContent = "Resultat: ---";
-        app.appendChild(resultP);
-
-        // Imágenes de jugador y máquina
-        window.imgPlayer = document.createElement("img");
-        window.imgMachine = document.createElement("img");
-        imgPlayer.style.width = "300px";
-        imgMachine.style.width = "300px";
-        app.appendChild(imgPlayer);
-        app.appendChild(imgMachine);
-
-        // Botones extra
-        let helpW;
-        const btnHelp = document.createElement("button");
-        btnHelp.textContent = "Ayuda";
-        btnHelp.onclick = () => helpW = window.open("", "helpW", "width=600,height=400");
-
-        const btnClose = document.createElement("button");
-        btnClose.textContent = "Cerrar ayuda";
-        btnClose.onclick = () => helpW && helpW.close();
-
-        const btnPoli = document.createElement("button");
-        btnPoli.textContent = "Politecnic";
-        btnPoli.onclick = () => window.open("https://politecnicllevant.cat");
-
-        const btnReset = document.createElement("button");
-        btnReset.textContent = "Reiniciar joc";
-        btnReset.addEventListener("click", () => reiniciarJoc(OPCIONES));
-
-        app.appendChild(btnHelp);
-        app.appendChild(btnClose);
-        app.appendChild(btnPoli);
-        app.appendChild(btnReset);
     }
 
     function paintResult(player, machine, result) {
