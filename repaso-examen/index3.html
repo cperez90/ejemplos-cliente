@@ -67,26 +67,96 @@
     }
 
     function reiniciarJoc() {
-        console.log("Reiniciant joc...");
-
-        // Reiniciar variables globals
-        currentMode = "prompt";
-
-        // Reiniciar elements visuals
+        ranking = [];
+        const resultP = document.getElementById("result");
+        const imgPlayer = document.getElementById("imgPlayer");
+        const imgMachine = document.getElementById("imgMachine");
         resultP.textContent = "Resultat: ---";
         imgPlayer.src = "";
         imgMachine.src = "";
-
-        // Tornar el select al mode "prompt"
-        const select = document.getElementById("mode");
-        if (select) select.value = "prompt";
-
-        ranking = [];
         paintRanking();
+    }
 
+    function jugarPrompt() {
+        const OPCIONES = ["piedra", "papel", "tijeras"];
+        const player = askPlayer(OPCIONES);
+        const machine = askMachine(OPCIONES);
+        const game = play(player, machine);
+        paintResult(player, machine, game);
     }
 
     //VISTA
+
+    function setupUI() {
+        const app = document.querySelector("#app");
+        app.innerHTML = ""; // limpiar al inicio
+
+        const title = document.createElement("h2");
+        title.textContent = "Mode de joc: Pedra, Paper o Tisores";
+        app.appendChild(title);
+
+        const label = document.createElement("label");
+        label.textContent = "Selecciona el mode: ";
+        label.setAttribute("for", "mode");
+        app.appendChild(label);
+
+        const select = document.createElement("select");
+        select.id = "mode";
+
+        const optPrompt = document.createElement("option");
+        optPrompt.value = "prompt";
+        optPrompt.textContent = "Prompt";
+        const optTeclat = document.createElement("option");
+        optTeclat.value = "teclat";
+        optTeclat.textContent = "Teclat";
+
+        select.appendChild(optPrompt);
+        select.appendChild(optTeclat);
+        app.appendChild(select);
+
+        const playButton = document.createElement("button");
+        playButton.textContent = "Jugar amb Prompt";
+        app.appendChild(playButton);
+
+        const resultP = document.createElement("p");
+        resultP.id = "result";
+        resultP.textContent = "Resultat: ---";
+        app.appendChild(resultP);
+
+        const imgPlayer = document.createElement("img");
+        imgPlayer.id = "imgPlayer";
+        imgPlayer.style.width = "150px";
+        app.appendChild(imgPlayer);
+
+        const imgMachine = document.createElement("img");
+        imgMachine.id = "imgMachine";
+        imgMachine.style.width = "150px";
+        app.appendChild(imgMachine);
+
+        // Botón reiniciar
+        const resetButton = document.createElement("button");
+        resetButton.textContent = "Reiniciar joc";
+        resetButton.addEventListener("click", reiniciarJoc);
+        app.appendChild(resetButton);
+
+        // Crear tabla vacía
+        paintRanking();
+
+        // Listeners
+        select.addEventListener("change", (event) => {
+            currentMode = event.target.value;
+            if (currentMode === "prompt") {
+                resultP.textContent = "Mode: Prompt";
+            } else {
+                resultP.textContent = "Mode: Teclat (prem R, P o S)";
+            }
+        });
+
+        playButton.addEventListener("click", () => {
+            if (currentMode === "prompt") jugarPrompt();
+        });
+    }
+
     function paintUI(OPCIONES) {
         const app = document.querySelector('#app');
         app.innerHTML = ""; // limpiar contenido previo solo una vez
@@ -174,26 +244,36 @@
     }
 
     function paintResult(player, machine, result) {
-        imgPlayer.src = "./assets/" + imgHand(player);
-        imgMachine.src = "./assets/" + imgHand(machine);
-
-        if (result === 0) resultP.textContent = "Empat!";
-        else if (result === 1) resultP.textContent = "Has guanyat!";
-        else resultP.textContent = "Has perdut!";
+        const resultP = document.getElementById("result");
+        const imgPlayer = document.getElementById("imgPlayer");
+        const imgMachine = document.getElementById("imgMachine");
 
         let guanyador;
         if (result === 1) guanyador = "Usuari";
         else if (result === 0) guanyador = "Empat";
         else guanyador = "Màquina";
 
-        // Afegir al rànking
-        ranking.push({
-            guanyador: guanyador,
-            usuari: player,
-            maquina: machine
+        resultP.textContent = `Resultat: ${guanyador}`;
+
+        imgPlayer.src = "./assets/" + imgHand(player);
+        imgMachine.src = "./assets/" + imgHand(machine);
+
+        imgPlayer.addEventListener('mouseover', () => {
+            imgPlayer.src = './assets/hand5.png';
+        });
+        imgPlayer.addEventListener('mouseout', () => {
+            imgPlayer.src = './assets/'+ imgHand(player);
         });
 
-        // Tornar a pintar la taula actualitzada
+        imgMachine.addEventListener('mouseover', () => {
+            imgMachine.src = './assets/hand5.png';
+        });
+        imgMachine.addEventListener('mouseout', () => {
+            imgMachine.src = './assets/'+ imgHand(machine);
+        });
+
+        // guardar ranking
+        ranking.push({ guanyador, usuari: player, maquina: machine });
         paintRanking();
     }
 
@@ -243,9 +323,8 @@
 
     //INIT
     function init() {
-        const OPCIONES = ['piedra', 'papel', 'tijeras'];
-        paintUI(OPCIONES);
-        activarModeTeclat(OPCIONES);
+        setupUI();
+        activarModeTeclat(["piedra", "papel", "tijeras"]);
     }
     init();
 </script>
