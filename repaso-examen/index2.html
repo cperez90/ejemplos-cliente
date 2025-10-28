@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app"></div>
+<script>
+    //MODEL
+    let currentMode = "prompt"; // 🔹 Variable global que controla el modo
+    let ranking = [];
+
+    //SERVEIS
+    function getRndInteger(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function play(player, machine) {
+        if (player === machine) return 0;
+        if (
+            (player === 'piedra' && machine === 'tijeras') ||
+            (player === 'papel' && machine === 'piedra') ||
+            (player === 'tijeras' && machine === 'papel')
+        ) return 1;
+        return -1;
+    }
+
+    function askPlayer(OPCIONES) {
+        let choice;
+        while (true) {
+            choice = prompt("Elije: Piedra / Papel / Tijeras");
+            if (choice && OPCIONES.includes(choice.toLowerCase())) break;
+            alert("Has de elegir una opción válida");
+        }
+        return choice.toLowerCase();
+    }
+
+    function askMachine(OPCIONES) {
+        return OPCIONES[getRndInteger(0, OPCIONES.length - 1)];
+    }
+
+    function imgHand(hand) {
+        if (hand === 'piedra') return 'hand0.png';
+        if (hand === 'papel') return 'hand5.png';
+        if (hand === 'tijeras') return 'hand2.png';
+    }
+
+    // 🎮 ACTIVAR MODO TECLAT
+    function activarModeTeclat(OPCIONES) {
+        document.addEventListener("keydown", (event) => {
+            if (currentMode === "teclat") {
+                const tecla = event.key.toLowerCase();
+                let playerChoice;
+
+                if (tecla === "r") playerChoice = "piedra";
+                else if (tecla === "p") playerChoice = "papel";
+                else if (tecla === "s") playerChoice = "tijeras";
+
+                if (playerChoice) {
+                    const machine = askMachine(OPCIONES);
+                    const result = play(playerChoice, machine);
+                    paintResult(playerChoice, machine, result);
+                }
+            }
+        });
+    }
+
+    function reiniciarJoc() {
+        console.log("Reiniciant joc...");
+
+        // Reiniciar variables globals
+        currentMode = "prompt";
+
+        // Reiniciar elements visuals
+        resultP.textContent = "Resultat: ---";
+        imgPlayer.src = "";
+        imgMachine.src = "";
+
+        // Tornar el select al mode "prompt"
+        const select = document.getElementById("mode");
+        if (select) select.value = "prompt";
+
+        ranking = [];
+        paintRanking();
+
+    }
+
+    //VISTA
+    function paintUI(OPCIONES) {
+        const app = document.querySelector('#app');
+        app.innerHTML = ""; // limpiar contenido previo solo una vez
+
+        const title = document.createElement("h2");
+        title.textContent = "Mode de joc: Pedra, Paper o Tisores";
+        app.appendChild(title);
+
+        const label = document.createElement("label");
+        label.textContent = "Selecciona el mode: ";
+
+        const select = document.createElement("select");
+        select.id = "mode";
+
+        const optPrompt = document.createElement("option");
+        optPrompt.value = "prompt";
+        optPrompt.textContent = "Prompt";
+
+        const optTeclat = document.createElement("option");
+        optTeclat.value = "teclat";
+        optTeclat.textContent = "Teclat";
+
+        select.appendChild(optPrompt);
+        select.appendChild(optTeclat);
+        label.appendChild(select);
+        app.appendChild(label);
+
+        select.addEventListener("change", (event) => {
+            currentMode = event.target.value;
+            resultP.textContent =
+                currentMode === "prompt"
+                    ? "Mode Prompt seleccionat"
+                    : "Mode Teclat (prem R, P o S)";
+        });
+
+        const playButton = document.createElement("button");
+        playButton.textContent = "Jugar amb Prompt";
+        playButton.addEventListener("click", () => {
+            if (currentMode === "prompt") {
+                const player = askPlayer(OPCIONES);
+                const machine = askMachine(OPCIONES);
+                const result = play(player, machine);
+                paintResult(player, machine, result);
+            } else {
+                resultP.textContent = "Estàs en mode Teclat! Usa R, P o S.";
+            }
+        });
+        app.appendChild(playButton);
+
+        // Zona de resultat
+        window.resultP = document.createElement("p");
+        resultP.textContent = "Resultat: ---";
+        app.appendChild(resultP);
+
+        // Imágenes de jugador y máquina
+        window.imgPlayer = document.createElement("img");
+        window.imgMachine = document.createElement("img");
+        imgPlayer.style.width = "300px";
+        imgMachine.style.width = "300px";
+        app.appendChild(imgPlayer);
+        app.appendChild(imgMachine);
+
+        // Botones extra
+        let helpW;
+        const btnHelp = document.createElement("button");
+        btnHelp.textContent = "Ayuda";
+        btnHelp.onclick = () => helpW = window.open("", "helpW", "width=600,height=400");
+
+        const btnClose = document.createElement("button");
+        btnClose.textContent = "Cerrar ayuda";
+        btnClose.onclick = () => helpW && helpW.close();
+
+        const btnPoli = document.createElement("button");
+        btnPoli.textContent = "Politecnic";
+        btnPoli.onclick = () => window.open("https://politecnicllevant.cat");
+
+        const btnReset = document.createElement("button");
+        btnReset.textContent = "Reiniciar joc";
+        btnReset.addEventListener("click", () => reiniciarJoc(OPCIONES));
+
+        app.appendChild(btnHelp);
+        app.appendChild(btnClose);
+        app.appendChild(btnPoli);
+        app.appendChild(btnReset);
+    }
+
+    function paintResult(player, machine, result) {
+        imgPlayer.src = "./assets/" + imgHand(player);
+        imgMachine.src = "./assets/" + imgHand(machine);
+
+        if (result === 0) resultP.textContent = "Empat!";
+        else if (result === 1) resultP.textContent = "Has guanyat!";
+        else resultP.textContent = "Has perdut!";
+
+        let guanyador;
+        if (result === 1) guanyador = "Usuari";
+        else if (result === 0) guanyador = "Empat";
+        else guanyador = "Màquina";
+
+        // Afegir al rànking
+        ranking.push({
+            guanyador: guanyador,
+            usuari: player,
+            maquina: machine
+        });
+
+        // Tornar a pintar la taula actualitzada
+        paintRanking();
+    }
+
+    function paintRanking() {
+        const app = document.querySelector('#app');
+
+        // Comprovar si la taula ja existeix, i si existeix, eliminar-la per tornar-la a crear
+        const oldTable = document.getElementById("ranking-table");
+        if (oldTable) oldTable.remove();
+
+        // Crear la taula
+        const table = document.createElement("table");
+        table.id = "ranking-table";
+        table.style.marginTop = "20px";
+
+        // Crear capçalera
+        const header = document.createElement("tr");
+        ["Guanyador", "Usuari", "Màquina"].forEach(text => {
+            const th = document.createElement("th");
+            th.textContent = text;
+            header.appendChild(th);
+        });
+        table.appendChild(header);
+
+        // Afegir files amb les dades
+        ranking.forEach(row => {
+            const tr = document.createElement("tr");
+
+            const tdGuanyador = document.createElement("td");
+            tdGuanyador.textContent = row.guanyador;
+            tr.appendChild(tdGuanyador);
+
+            const tdUsuari = document.createElement("td");
+            tdUsuari.textContent = row.usuari;
+            tr.appendChild(tdUsuari);
+
+            const tdMaquina = document.createElement("td");
+            tdMaquina.textContent = row.maquina;
+            tr.appendChild(tdMaquina);
+
+            table.appendChild(tr);
+        });
+
+        app.appendChild(table);
+    }
+
+
+    //INIT
+    function init() {
+        const OPCIONES = ['piedra', 'papel', 'tijeras'];
+        paintUI(OPCIONES);
+        activarModeTeclat(OPCIONES);
+    }
+    init();
+</script>
+
+</body>
+</html>

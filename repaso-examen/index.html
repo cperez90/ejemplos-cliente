@@ -8,7 +8,7 @@
 <div id="app"></div>
 <script>
     //MODEL
-    const OPCIONES = ['piedra','papel','tijeras'];
+
     //SERVEIS
     function getRndInteger(min,max){
         return Math.floor(Math.random()* (max -min +1)) + min;
@@ -31,8 +31,26 @@
         }
         return -1;
     }
+    function activarModeTeclat(OPCIONES,currentMode) {
+        document.addEventListener("keydown", (event) => {
+            if (currentMode === "teclat") {
+                const tecla = event.key.toLowerCase();
+                let playerChoice;
+
+                if (tecla === "r") playerChoice = "piedra";
+                else if (tecla === "p") playerChoice = "papel";
+                else if (tecla === "s") playerChoice = "tijeras";
+
+                if (playerChoice) {
+                    const machine = askMachine(OPCIONES);
+                    const result = play(playerChoice, machine);
+                    paintResult(playerChoice, machine, result);
+                }
+            }
+        });
+    }
     //VISTA
-    function askPlayer(){
+    function askPlayer(OPCIONES){
         let isValid = false;
         let choice;
         while (!isValid){
@@ -48,14 +66,58 @@
         // TODO: ...
     }
 
-    function  askMachine(){
+    function  askMachine(OPCIONES){
         const random = getRndInteger(0,OPCIONES.length-1);
         return OPCIONES[random];
     }
 
-    function paintResult(player,machine,result){
+    function paintResult(player,machine,result,currentMode){
         console.log(player,machine,result);
         const app = document.querySelector('#app');
+
+        const title = document.createElement("h2");
+        title.textContent = "Mode de joc: Pedra, Paper o Tisores";
+        app.appendChild(title);
+
+        const label = document.createElement("label");
+        label.textContent = "Selecciona el mode: ";
+        label.setAttribute("for", "mode");
+
+        const select = document.createElement("select");
+        select.id = "mode";
+
+        const optPrompt = document.createElement("option");
+        optPrompt.value = "prompt";
+        optPrompt.textContent = "Prompt";
+
+        const optTeclat = document.createElement("option");
+        optTeclat.value = "teclat";
+        optTeclat.textContent = "Teclat";
+
+        select.appendChild(optPrompt);
+        select.appendChild(optTeclat);
+
+        app.appendChild(label);
+        app.appendChild(select);
+
+        const playButton = document.createElement("button");
+        playButton.textContent = "Jugar amb Prompt";
+        app.appendChild(playButton);
+
+        const resultP = document.createElement("p");
+        resultP.textContent = "Resultat: ---";
+        app.appendChild(resultP);
+
+        select.addEventListener("change", (event) => {
+            currentMode = event.target.value;
+            console.log("Mode canviat a:", currentMode);
+            if (currentMode === "prompt") {
+                resultP.textContent = "Has triat el mode Prompt";
+            } else {
+                resultP.textContent = "Has triat el mode Teclat (prem R, P o S)";
+            }
+        });
+
         const imgPlayer = document.createElement('IMG');
         const handPlayer = imgHand(player);
         imgPlayer.src = './assets/'+handPlayer;
@@ -119,10 +181,13 @@
 
     //INIT
     function init(){
-        const player = askPlayer();
-        const machine = askMachine();
+        const OPCIONES = ['piedra','papel','tijeras'];
+        let currentMode = "prompt";
+        activarModeTeclat(OPCIONES,currentMode);
+        const player = askPlayer(OPCIONES);
+        const machine = askMachine(OPCIONES);
         const game = play(player,machine);
-        paintResult(player,machine,game)
+        paintResult(player,machine,game,currentMode)
     }
     init();
 </script>
