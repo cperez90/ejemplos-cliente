@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Promise</title>
+</head>
+<body>
+<script>
+    let global = 10;
+    function getRndInteger(min,max){
+        return Math.floor(Math.random()* (max -min +1)) + min;
+    }
+
+    function prova(time) {
+
+        return  myPromise = new Promise(function(res , rej) {
+            setTimeout(function (){
+                const r = getRndInteger(1,10);
+                global = 0;
+                if (r%2 === 0){
+                    res("Hola")
+                }else {
+                    rej("Adeu")
+                }
+            },time);
+        }).then(function (result){
+            console.log("Resultat OK", result)
+        }).catch(function (result){
+            console.log("Resultat KO", result);
+        })
+
+    }
+
+    console.log(global);
+    prova(5000);
+    console.log(global);
+    prova(1000);
+    console.log(global);
+    prova(7000);
+    console.log(global);
+    prova(2000);
+    console.log(global);
+
+    setTimeout(function (){
+        console.log(global);
+    },8000);
+</script>
+</body>
+</html>
