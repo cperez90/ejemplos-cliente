@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MVC API</title>
+</head>
+<body>
+<div id="app">
+    <p>
+        Nom: <span>Carregant...</span>
+    </p>
+    <p >
+        Cognoms: <span>Carregant...</span>
+    </p>
+    <p>
+        E-mail: <span>Carregant...</span>
+    </p>
+    <p>
+        Gènere: <span>Carregant...</span>
+    </p>
+</div>
+<script src="model/models.js"></script>
+<script src="service/services.js"></script>
+<script src="view/view.js"></script>
+<script>
+
+    function init(){
+        getPersona().then(function (persona) {
+            paintResult(persona);
+        })
+
+    }
+
+    init();
+</script>
+</body>
+</html>
