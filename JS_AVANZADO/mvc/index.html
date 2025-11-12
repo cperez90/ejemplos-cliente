@@ -19,11 +19,13 @@
         Gènere: <span>Carregant...</span>
     </p>
 </div>
-<script src="model/models.js"></script>
+<!--<script src="model/models.js"></script>
 <script src="service/services.js"></script>
 <script src="view/view.js"></script>
-<script>
-
+-->
+<script type="module">
+    import {getPersona} from './service/services.js';
+    import {paintResult} from './view/view.js';
     function init(){
         getPersona().then(function (persona) {
             paintResult(persona);

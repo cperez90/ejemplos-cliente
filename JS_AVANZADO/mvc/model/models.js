@@ -1,4 +1,4 @@
-function Persona(nom,cognoms,email,genere,dni)
+export function Persona(nom,cognoms,email,genere,dni)
 {
     this.nom = nom;
     this.cognoms = cognoms;

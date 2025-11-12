@@ -1,4 +1,4 @@
-function paintResult(persona){
+export function paintResult(persona){
     /*const nom = result.results[0].name.first;
     const cognoms = result.results[0].name.last;
     const email = result.results[0].email;

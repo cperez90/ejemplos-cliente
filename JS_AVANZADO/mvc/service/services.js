@@ -1,7 +1,9 @@
 /*
 * return Promise<Persona>
 */
-function getPersona()
+import {Persona} from "../model/models.js";
+
+export function getPersona()
 {
     return fetch('https://randomuser.me/api/')
         .then(function (resposta){
