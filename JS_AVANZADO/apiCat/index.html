@@ -8,11 +8,14 @@
 <div id="app"></div>
 <script type="module">
     import {getCat} from "./service/CatService.js";
+    import {getCats} from "./service/CatService.js";
     import {paintResult} from "./view/CatView.js";
 
     function init(){
-        getCat().then(function (cat){
-            paintResult(cat)
+        getCats(10).then(function (cats){
+            for (let cat of cats) {
+                paintResult(cat)
+            }
         })
     }
 
