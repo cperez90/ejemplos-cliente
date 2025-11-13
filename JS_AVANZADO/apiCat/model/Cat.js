@@ -1,5 +1,5 @@
-export function Cat(name, race)
+export function Cat(imagen, race)
 {
-    this.name = name;
+    this.imagen = imagen;
     this.race = race;
 }

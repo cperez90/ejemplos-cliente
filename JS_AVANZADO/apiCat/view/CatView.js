@@ -1,15 +1,16 @@
 export function paintResult(cat){
-    const name = cat.name;
+    const imagen = cat.imagen;
     const race = cat.race;
 
     const app = document.querySelector('#app');
-    const nameP = document.createElement('p');
+    const imagenP = document.createElement('img');
     const raceP = document.createElement('p');
-    nameP.innerHTML= name;
+    imagenP.src = imagen;
+    imagenP.alt = "Cat";
+    imagenP.width = 300;
     raceP.innerHTML = race;
-    app.appendChild(nameP);
+    app.appendChild(imagenP);
     app.appendChild(raceP);
 
-
-    console.log(name,race);
+    console.log(imagen,race);
 }

@@ -12,10 +12,18 @@ export function getCat()
         headers: headers,
         redirect: 'follow'
     };
-    return fetch("https://api.thecatapi.com/v1/images/0XYvRd7oD", requestOptions)
+    return fetch("https://api.thecatapi.com/v1/images/search?limit=10", requestOptions)
         .then(function (resposta){
             return resposta.json();
         }).then(function (result){
+
+        })
+
+
+
+
+
+        .then(function (result){
             return new Cat(
                 result.url,
                 result.breeds[0].name);
