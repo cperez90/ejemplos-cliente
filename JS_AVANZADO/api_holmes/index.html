@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Holmes</title>
+</head>
+<body>
+<button id="boto1">Click boto 1</button>
+<button id="boto2">Click boto 2</button>
+<script>
+
+    // REGULAR -> INSTANCIA de la funcion del listener
+    document.querySelector("#boto1").addEventListener('click',function () {
+        console.log(this);
+        this.style.backgroundColor = 'blue';
+    })
+
+    // ARROW -> DEFINICIO de la funcion
+    document.querySelector("#boto2").addEventListener('click',() => {
+        console.log(this);
+        this.style.backgroundColor = 'red';
+    })
+</script>
+</body>
+</html>

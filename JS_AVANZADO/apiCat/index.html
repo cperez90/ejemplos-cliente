@@ -9,13 +9,15 @@
 <script type="module">
     import {getCats} from "./service/CatService.js";
     import {paintResult} from "./view/CatView.js";
+    import {paintCats} from "./view/CatView.js";
 
     function init(){
-        getCats(10).then(function (cats){
+        /*getCats(10).then(function (cats){
             for (let cat of cats) {
                 paintResult(cat)
             }
-        })
+        })*/
+        getCats(10).then((cats) =>paintCats(cats));
     }
 
     init();

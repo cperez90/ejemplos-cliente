@@ -10,9 +10,8 @@ export function getCats(limit)
     var requestOptions = {
         method: 'GET',
         headers: headers,
-        redirect: 'follow'
     };
-    return fetch("https://api.thecatapi.com/v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=RANDOM&page=0&limit="+limit, requestOptions)
+    /*return fetch("https://api.thecatapi.com/v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=RANDOM&page=0&limit="+limit, requestOptions)
         .then(function (resposta){
             return resposta.json();
         }).then(function (result){
@@ -23,5 +22,16 @@ export function getCats(limit)
                     result[i].breeds[0].name));
             }
             return cats;
+        })*/
+
+    return fetch("https://api.thecatapi.com/v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=RANDOM&page=0&limit="+limit, requestOptions)
+    .then(response => response.json())
+        .then(result => {
+        return result.map(jsonCat => clientToCat(jsonCat))
         })
+        .catch(error => console.log('error', error));
+}
+
+function clientToCat(result){
+    return new Cat(result.url, result.breeds[0].name);
 }

@@ -14,3 +14,16 @@ export function paintResult(cat){
 
     console.log(imagen,race);
 }
+
+export function paintCats(cats){
+
+    const app = document.querySelector('#app');
+
+    let result = '<ul>';
+    for (const  cat of cats){
+        result += `<li><img src="${cat.imagen}" style="width: 300px">${cat.race}</li>`
+    }
+    result += '</ul>'
+
+    app.innerHTML = result;
+}
