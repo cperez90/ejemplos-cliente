@@ -27,7 +27,9 @@ export function getCats(limit)
     return fetch("https://api.thecatapi.com/v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=RANDOM&page=0&limit="+limit, requestOptions)
     .then(response => response.json())
         .then(result => {
-        return result.map(jsonCat => clientToCat(jsonCat))
+        return result
+            .map(jsonCat => clientToCat(jsonCat))
+            .filter(cat => !cat.race.toLowerCase().includes('a')) //filtro de prueba
         })
         .catch(error => console.log('error', error));
 }
