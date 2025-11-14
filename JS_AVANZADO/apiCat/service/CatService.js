@@ -1,17 +1,27 @@
 import {Cat} from "../model/Cat.js";
 
-export function getCats(limit)
+
+export function nextPage(pagina){
+    return pagina++;
+}
+
+export function previosPage(pagina){
+    return pagina--;
+}
+
+export function getCats(limit,pagina)
 {
     const headers = new Headers({
         "Content-Type": "application/json",
         "x-api-key": "live_53VmMRrKFF608qPvLfYxxBznyeK1u0oQK3srd2Xu9jNgJksIBea8HttyOhxNdz61"
     });
 
-    var requestOptions = {
+    const requestOptions = {
         method: 'GET',
         headers: headers,
     };
-    /*return fetch("https://api.thecatapi.com/v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=RANDOM&page=0&limit="+limit, requestOptions)
+    /*
+    return fetch("https://api.thecatapi.com/v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=RANDOM&page=0&limit="+limit, requestOptions)
         .then(function (resposta){
             return resposta.json();
         }).then(function (result){
@@ -22,14 +32,15 @@ export function getCats(limit)
                     result[i].breeds[0].name));
             }
             return cats;
-        })*/
+        })
+        */
 
-    return fetch("https://api.thecatapi.com/v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=RANDOM&page=0&limit="+limit, requestOptions)
+    return fetch("https://api.thecatapi.com/v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&page="+pagina+"&limit="+limit, requestOptions)
     .then(response => response.json())
         .then(result => {
         return result
             .map(jsonCat => clientToCat(jsonCat))
-            .filter(cat => !cat.race.toLowerCase().includes('a')) //filtro de prueba
+            //.filter(cat => !cat.race.toLowerCase().includes('a')) //filtro de prueba
         })
         .catch(error => console.log('error', error));
 }
