@@ -1,14 +1,5 @@
 import {Cat} from "../model/Cat.js";
 
-
-export function nextPage(pagina){
-    return pagina++;
-}
-
-export function previosPage(pagina){
-    return pagina--;
-}
-
 export function getCats(limit,pagina)
 {
     const headers = new Headers({
@@ -35,7 +26,7 @@ export function getCats(limit,pagina)
         })
         */
 
-    return fetch("https://api.thecatapi.com/v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&page="+pagina+"&limit="+limit, requestOptions)
+    return fetch("https://api.thecatapi.com/v1/images/search?size=med&mime_types=jpg&format=json&has_breeds=true&order=ASC&page="+pagina+"&limit="+limit, requestOptions)
     .then(response => response.json())
         .then(result => {
         return result

@@ -1,4 +1,3 @@
-import {getCats, nextPage} from "../service/CatService.js";
 
 export function paintResult(cat){
     const imagen = cat.imagen;
@@ -17,28 +16,38 @@ export function paintResult(cat){
     console.log(imagen,race);
 }
 
-export function paintCats(cats){
+export function paintCats(cats, onNext, onPrev){
 
     const app = document.querySelector('#app');
+    app.innerHTML = "";
 
-    const botoalante = document.createElement("button");
-    const botoatras = document.createElement("button");
-    botoalante.innerHTML= ">";
-    botoatras.innerHTML= "<";
-    botoalante.addEventListener('click',function (){
-        nextPage();
-        getCats()
-    })
+    const nav = document.createElement("div");
 
+    const btnPrev = document.createElement("button");
+    btnPrev.textContent = "<";
+    btnPrev.addEventListener("click", onPrev);
 
-    let result = '<ul>';
-    for (const  cat of cats){
-        result += `<li><img src="${cat.imagen}" style="width: 300px">${cat.race}</li>`
+    const btnNext = document.createElement("button");
+    btnNext.textContent = ">";
+    btnNext.addEventListener("click", onNext);
+
+    nav.appendChild(btnPrev);
+    nav.appendChild(btnNext);
+
+    const list = document.createElement("ul");
+
+    for (const cat of cats) {
+        const li = document.createElement("li");
+
+        li.innerHTML = `
+            <img src="${cat.imagen}" style="width:300px">
+            <p>${cat.race}</p>
+        `;
+
+        list.appendChild(li);
     }
-    result += '</ul>'
 
-    app.appendChild(botoatras);
-    app.appendChild(botoalante);
-    app.innerHTML += result;
+    app.appendChild(nav);
+    app.appendChild(list);
 
 }

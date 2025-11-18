@@ -11,13 +11,29 @@
     import {paintResult} from "./view/CatView.js";
     import {paintCats} from "./view/CatView.js";
 
+    let paginaActual = 0;
+    const limit = 20;
+
+    function nextPage() {
+        paginaActual++;
+        init();
+    }
+
+    function prevPage() {
+        if (paginaActual > 0) {
+            paginaActual--;
+            init();
+        }
+    }
+
     function init(){
         /*getCats(10).then(function (cats){
             for (let cat of cats) {
                 paintResult(cat)
             }
         })*/
-        getCats(20,0).then((cats) =>paintCats(cats));
+        getCats(limit,paginaActual).then((cats) =>paintCats(cats, nextPage, prevPage));
+        console.log("Página cargada:", paginaActual);
     }
 
     init();
