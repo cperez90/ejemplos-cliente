@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Arrow-This</title>
+</head>
+<body>
+<button id="boto1">Click boto 1</button>
+<button id="boto2">Click boto 2</button>
+<script>
+
+    // REGULAR -> INSTANCIA de la funcion del listener
+    document.querySelector("#boto1").addEventListener('click',function () {
+        console.log(this);
+        this.style.backgroundColor = 'blue';
+    })
+
+    // ARROW -> DEFINICIO de la funcion
+    document.querySelector("#boto2").addEventListener('click',() => {
+        console.log(this);
+        this.style.backgroundColor = 'red';
+    })
+
+
+    function Persona(nom,cognoms){
+        this.nom = nom;
+        this.cognoms = cognoms;
+        this.nomComplet = function (){
+            return "REGULAR: " + this.nom + " " + this.cognoms;
+        }
+        this.nomComplet2 = () => "Arrow: " + this.nom + " " + this.cognoms;
+    }
+    const  tomeu = new Persona("Tomeu", "Brunet");
+    console.log("Nom Complet 1 ",tomeu.nom,tomeu.cognoms, tomeu.nomComplet() );
+    console.log("Nom Complet 2 ",tomeu.nom,tomeu.cognoms, tomeu.nomComplet2() );
+
+    const nomCompletRegular = tomeu.nomComplet.bind(tomeu);
+
+    window.nom = "Pep";
+    const nomCompletRegular2 = function (){
+        console.log("Regular 2 THIS: ",this);
+        return "Regular 2 " + this.nom + " " + this.cognoms;
+    }.bind(tomeu);
+
+    console.log("Nom complet 4 ",nomCompletRegular2())
+
+    const nomCompletArrow = tomeu.nomComplet2;
+
+    console.log("Nom complet 3 ", nomCompletRegular(), nomCompletArrow());
+</script>
+</body>
+</html>
