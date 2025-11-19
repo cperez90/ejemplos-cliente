@@ -14,5 +14,5 @@ function clientToCar(result){
 }
 
 export function findByName (cars, txt){
-    return cars.filter(car=>car.nom.includes(txt));
+    return cars.filter(car=>car.name.includes(txt));
 }

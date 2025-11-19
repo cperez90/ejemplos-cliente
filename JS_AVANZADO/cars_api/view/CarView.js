@@ -2,12 +2,13 @@ import {findByName} from "../service/CarService.js";
 
 export function paintCars(cars){
     const app = document.querySelector('#app');
-    app.innerHTML = "";
+
     const list = document.createElement("ul");
     let inputName = document.createElement("input");
-
     inputName.addEventListener('input',function (){
         const  carsFilters = findByName(cars,this.value);
+        list.innerHTML = "";
+        lista(list,carsFilters);
         console.log(carsFilters);
     });
     /*inputName.addEventListener('input',() =>{
@@ -18,23 +19,13 @@ export function paintCars(cars){
 
     app.appendChild(inputName);
 
-    for (const car of cars) {
-        const li = document.createElement("li");
-
-        li.innerHTML = `
-            <p>${car.name}</p>
-            <p>${car.horsepower}</p>
-            <p>${car.year}</p>
-        `;
-
-        list.appendChild(li);
-    }
+    lista(list,cars);
 
     app.appendChild(list);
 }
 
-function lista(){
-    const list = document.createElement("ul");
+function lista(list,cars){
+
     for (const car of cars) {
         const li = document.createElement("li");
 
@@ -46,6 +37,7 @@ function lista(){
 
         list.appendChild(li);
     }
+    return list;
 }
 
 function cercar(ev){
