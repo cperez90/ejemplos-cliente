@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cars</title>
+</head>
+<body>
+<div id="app"></div>
+<script type="module">
+import {findAll} from "./service/CarService.js"
+import {paintCars} from "./view/CarView.js";
+
+function init(){
+    findAll().then((cars) =>paintCars(cars));
+}
+
+init();
+
+</script>
+</body>
+</html>
