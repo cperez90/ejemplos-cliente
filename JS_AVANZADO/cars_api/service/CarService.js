@@ -13,6 +13,30 @@ function clientToCar(result){
     return new Car(result.Name, result.Horsepower,result.Year);
 }
 
-export function findByName (cars, txt){
-    return cars.filter(car=>car.name.includes(txt));
+function findByName (cars, txt){
+    if (!txt){
+        return cars;
+    }
+    return cars.filter(car=>car.name.toLowerCase().includes(txt.toLowerCase()));
+}
+
+function findByMinHP(cars,minHP){
+    if (!minHP){
+        return cars;
+    }
+    return cars.filter(car=>car.horsepower>=minHP);
+}
+
+function findByMaxHP(cars,max){
+    if (!max){
+        return cars;
+    }
+    return cars.filter(car=>car.horsepower<=max);
+}
+
+export function cerca(cars,txt,min,max){
+    const carsName = findByName(cars,txt);
+    const carsMinHP = findByMinHP(carsName,min);
+    const carsMaxHP = findByMaxHP(carsMinHP,max);
+    return carsMaxHP;
 }

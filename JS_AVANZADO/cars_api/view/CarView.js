@@ -1,30 +1,61 @@
-import {findByName} from "../service/CarService.js";
+import {cerca} from "../service/CarService.js";
 
 export function paintCars(cars){
     const app = document.querySelector('#app');
-
     const list = document.createElement("ul");
+
+    const  labelName = document.createElement('LABEL');
+    labelName.innerText = 'Name';
+    app.appendChild(labelName);
     let inputName = document.createElement("input");
     inputName.addEventListener('input',function (){
-        const  carsFilters = findByName(cars,this.value);
+        const carsFilters = cerca(cars,inputName.value,inputMin.value,inputMax.value);
         list.innerHTML = "";
-        lista(list,carsFilters);
+        paintlistCars(list,carsFilters);
         console.log(carsFilters);
     });
-    /*inputName.addEventListener('input',() =>{
+    app.appendChild(inputName);
+    /*
+    inputName.addEventListener('input',() =>{
         const valor = document.querySelector("input").value;
         console.log(valor);
     });
-    inputName.addEventListener('input',cercar);*/
+    inputName.addEventListener('input',cercar);
+    */
 
-    app.appendChild(inputName);
+    //POTENCIA
+    const  minHPLabel = document.createElement('LABEL');
+    minHPLabel.innerText = 'Min HP';
+    let inputMin = document.createElement("input");
+    app.appendChild(minHPLabel);
+    inputMin.addEventListener('input',function (){
+        list.innerHTML = "";
+        const carsFilters = cerca(cars,inputName.value,inputMin.value,inputMax.value);
+        paintlistCars(list,carsFilters);
+        console.log(carsFilters);
+    });
+    app.appendChild(inputMin);
 
-    lista(list,cars);
+    const  maxHPLabel = document.createElement('LABEL');
+    maxHPLabel.innerText = 'Max HP';
+    app.appendChild(maxHPLabel);
+    let inputMax = document.createElement("input");
+    inputMax.addEventListener('input',function (){
+        list.innerHTML = "";
+        const carsFilters = cerca(cars,inputName.value,inputMin.value,inputMax.value);
+        paintlistCars(list,carsFilters);
+        console.log(carsFilters);
+    });
+    app.appendChild(inputMax);
+
+
+
+    paintlistCars(list,cars);
 
     app.appendChild(list);
 }
 
-function lista(list,cars){
+function paintlistCars(list,cars){
 
     for (const car of cars) {
         const li = document.createElement("li");
@@ -40,7 +71,7 @@ function lista(list,cars){
     return list;
 }
 
-function cercar(ev){
+/*function cercar(ev){
     console.log("cercar: ")
     console.log(ev.target.value);
-}
+}*/
