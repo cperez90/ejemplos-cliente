@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Teacher</title>
+</head>
+<body>
+<div id="app"></div>
+<script>
+    /*const promises = []
+    for (let i = 0; i < 10; i++) {
+        const promise = fetch("https://theteacher.codiblau.com/public/exercicis/other/asincron-get?num="+(i+1));
+        promises.push(promise);
+    }
+
+    Promise.all(promises).then(results=>{
+        const promisesText = [];
+        for (const r of results){
+            promisesText.push(r.text());
+        }
+        Promise.all(promisesText).then(resultsText=>{
+            for (const rt of resultsText){
+                document.querySelector('#app').innerHTML+='<p>'+rt+'</p>';
+            }
+        })
+    })*/
+
+    const promises = []
+    for (let i = 0; i < 10; i++) {
+        const promise = fetch("https://theteacher.codiblau.com/public/exercicis/other/asincron-get?num="+(i+1))
+            .then(x=>x.text())
+        promises.push(promise);
+    }
+    Promise.all(promises).then(resultsText=>{
+        for (const rt of resultsText){
+            document.querySelector('#app').innerHTML+='<p>'+rt+'</p>';
+        }
+    })
+</script>
+</body>
+</html>
