@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transports</title>
+</head>
+<body>
+<div id="app"></div>
+<script type="module">
+import {findAll} from "./service/UserTransportService.js";
+import {getTransportById} from "./service/UserTransportService.js";
+/*async function init(){
+    findAll().then((users) => {})
+}
+(async ()=>init())();*/
+
+(async () => {
+    const usuaris = await findAll();
+    console.log(usuaris);
+    const transport = await getTransportById();
+    console.log(transport);
+})();
+</script>
+</body>
+</html>

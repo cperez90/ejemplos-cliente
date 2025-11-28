@@ -23,7 +23,7 @@
                 document.querySelector('#app').innerHTML+='<p>'+rt+'</p>';
             }
         })
-    })*/
+    })
 
     const promises = []
     for (let i = 0; i < 10; i++) {
@@ -35,7 +35,63 @@
         for (const rt of resultsText){
             document.querySelector('#app').innerHTML+='<p>'+rt+'</p>';
         }
-    })
+    })*/
+
+
+    function asincron1(){
+        return fetch("https://theteacher.codiblau.com/public/exercicis/other/asincron-get?num=1")
+            .then(x=>x.text())
+            .then(x=>{
+                return x;
+        })
+    }
+
+    async function asincron2(){
+        const f = await fetch("https://theteacher.codiblau.com/public/exercicis/other/asincron-get?num=1")
+        const ftext = await f.text();
+        return ftext;
+    }
+
+    function asincron3(){
+        for (let i = 0; i < 10; i++) {
+            fetch("https://theteacher.codiblau.com/public/exercicis/other/asincron-get?num="+(i+1))
+                .then(x=>x.text())
+                .then(x=>{
+                    document.querySelector('#app').innerHTML+='<p>'+x+'</p>';
+                })
+        }
+    }
+
+    async function init(){
+        /*asincron1().then(resposta =>{
+            console.log("FETCH", resposta);
+        })
+
+        asincron2().then(resposta =>{
+            console.log("ASYNC / AWAIT", resposta);
+        })
+
+        const resposta = await asincron2();
+        console.log(resposta);
+
+        for (let i = 0; i < 10; i++) {
+            const fetch1 = fetch("https://theteacher.codiblau.com/public/exercicis/other/asincron-get?num="+(i+1))
+            const resposta = await fetch1.text()
+            document.querySelector('#app').innerHTML+='<p>'+resposta+'</p>';
+        }*/
+
+        const promises = [];
+        for (let i=0; i<10;i++){
+            const promise = fetch("https://theteacher.codiblau.com/public/exercicis/other/asincron-get?num="+(i+1))
+                .then(x=>x.text());
+            promises.push(promise);
+        }
+       const resultats = await Promise.all(promises);
+        for (const r of resultats){
+            document.querySelector('#app').innerHTML+='<p>'+r+'</p>';
+        }
+    }
+    (async ()=>init())(); //IIFE (auto invoke)
 </script>
 </body>
 </html>
