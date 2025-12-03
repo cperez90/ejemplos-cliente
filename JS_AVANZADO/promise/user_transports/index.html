@@ -7,18 +7,29 @@
 <body>
 <div id="app"></div>
 <script type="module">
-import {findAll} from "./service/UserTransportService.js";
-import {getTransportById} from "./service/UserTransportService.js";
+import { UserTransportService } from "./service/UserTransportService.js";
+import { UserTransportView} from "./view/UserTransportView.js";
 /*async function init(){
     findAll().then((users) => {})
 }
 (async ()=>init())();*/
 
 (async () => {
-    const usuaris = await findAll();
-    console.log(usuaris);
-    const transport = await getTransportById();
-    console.log(transport);
+    const userTransportService = new UserTransportService();
+    const userTransportView = new UserTransportView();
+    const usuaris = await userTransportService.findAll();
+    /*userTransportService.findAll().then(usuaris=>{
+        console.log("Usuaris findAll",usuaris);
+    })*/
+    /*const  usuarisTransport = usuaris.forEach(u=>{
+        u.transport.then()
+    });*/
+    console.log("Usuaris findAll",usuaris);
+
+    //const transport = await userTransportService.getTransportById(1);
+    //console.log(transport);
+
+    userTransportView.paintUser(usuaris);
 })();
 </script>
 </body>

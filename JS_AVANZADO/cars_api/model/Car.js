@@ -1,7 +1,10 @@
-export function Car(name, horsepower, year)
+export class Car
 {
-    this.name = name;
-    this.horsepower = horsepower;
-    this.year = year;
+     constructor(name, horsepower, year) {
+
+        this.name = name;
+        this.horsepower = horsepower;
+        this.year = year;
+    }
 
 }
