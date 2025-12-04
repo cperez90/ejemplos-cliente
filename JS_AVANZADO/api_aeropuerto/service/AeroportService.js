@@ -3,9 +3,6 @@ import {Aeroport} from "../model/aeroport.js";
 
 export class AeroportService{
 
-    map = L.map('map').setView([51.505, -0.09], 13);
-
-
     async findAll() {
         const aeroportFetch = await fetch('https://theteacher.codiblau.com/public/exercicis/airports')
         const aeroports = await aeroportFetch.json();
@@ -25,7 +22,12 @@ export class AeroportService{
         if (!txt){
             return aeroports;
         }
-        return aeroports.filter(aeroport=>aeroport.name.code.city.toLowerCase().includes(txt.toLowerCase()));
+        return aeroports
+            .filter(
+            aeroport=>aeroport.name.toLowerCase().includes(txt.toLowerCase()) ||
+            aeroport.code.toLowerCase().includes(txt.toLowerCase()) ||
+            aeroport.city.toLowerCase().includes(txt.toLowerCase())
+            );
     }
 
     search(aeroports,txt){

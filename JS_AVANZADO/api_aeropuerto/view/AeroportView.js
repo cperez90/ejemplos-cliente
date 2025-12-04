@@ -2,78 +2,74 @@ import {AeroportService} from "../service/AeroportService.js";
 
 export class AeroportView{
 
-    paintAeroport(aeroports){
+    paintAeroport(aeroports, map){
         const service = new AeroportService();
         const app = document.querySelector('#app');
-        const list = document.createElement('td');
+        app.innerHTML = "";
 
         const labelSearch = document.createElement('label');
-        labelSearch.innerText= "Search";
-        app.appendChild(labelSearch);
+        labelSearch.innerText = "Search: ";
 
         const searchInput = document.createElement('input');
-        searchInput.addEventListener('input',function (){
-            const aeroportsFilter = service.search(aeroports,searchInput.value);
-            list.innerHTML = "";
-            paintlistCars(list,aeroportsFilter);
-            console.log(aeroportsFilter);
-        });
+
+        app.appendChild(labelSearch);
         app.appendChild(searchInput);
 
         const table = document.createElement('table');
+        const thead = document.createElement('thead');
+        const tbody = document.createElement('tbody');
 
-        const trHeader = document.createElement('tr');
+        thead.innerHTML = `
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Latitude</th>
+                <th>Longitude</th>
+                <th>City</th>
+            </tr>
+        `;
 
-        const thAeroCode = document.createElement('th');
-        thAeroCode.innerText = "Code";
-
-        const  thAeroName = document.createElement('th');
-        thAeroName.innerText = "Name";
-
-        const thAeroLat = document.createElement('th');
-        thAeroLat.innerText = "Latitude";
-
-        const thAeroLon = document.createElement('th');
-        thAeroLon.innerText = "Longitude";
-
-        const thAeroCity = document.createElement('th');
-        thAeroCity.innerText = "City";
-
-        trHeader.appendChild(thAeroCode);
-        trHeader.appendChild(thAeroName);
-        trHeader.appendChild(thAeroLat);
-        trHeader.appendChild(thAeroLon);
-        trHeader.appendChild(thAeroCity);
-
-        table.appendChild(trHeader);
-
-        for (const aeroport of aeroports) {
-            const trHeader = document.createElement('tr');
-
-            const tdAeroCode = document.createElement('td');
-            tdAeroCode.innerText = aeroport.code;
-
-            const tdAeroName = document.createElement('td');
-            tdAeroName.innerText = aeroport.name;
-
-            const tdAeroLat = document.createElement('td');
-            tdAeroLat.innerText = aeroport.lat;
-
-            const tdAeroLon = document.createElement('td');
-            tdAeroLon.innerText = aeroport.lon;
-
-            const tdAeroCity = document.createElement('td');
-            tdAeroCity.innerText = aeroport.city;
-
-            trHeader.appendChild(tdAeroCode);
-            trHeader.appendChild(tdAeroName);
-            trHeader.appendChild(tdAeroLat);
-            trHeader.appendChild(tdAeroLon);
-            trHeader.appendChild(tdAeroCity);
-
-            table.appendChild(trHeader);
-        }
-
+        table.appendChild(thead);
+        table.appendChild(tbody);
         app.appendChild(table);
+
+        const markers = {};
+
+        aeroports.forEach(a => {
+            const marker = L.marker([a.lat, a.lon])
+                .addTo(map)
+                .bindPopup(`<b>${a.name}</b><br>${a.city}`);
+            markers[a.code] = marker;
+        });
+
+        const paintRows = (data) => {
+            tbody.innerHTML = "";
+            data.forEach(a => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${a.code}</td>
+                    <td>${a.name}</td>
+                    <td>${a.lat}</td>
+                    <td>${a.lon}</td>
+                    <td>${a.city}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        };
+
+        paintRows(aeroports);
+
+        searchInput.addEventListener('input', () => {
+            const filtered = service.search(aeroports, searchInput.value);
+            paintRows(filtered);
+
+            if (filtered.length > 0) {
+                const first = filtered[0];
+
+                map.setView([first.lat, first.lon], 10);
+
+                markers[first.code].openPopup();
+            }
+        });
     }
 }
