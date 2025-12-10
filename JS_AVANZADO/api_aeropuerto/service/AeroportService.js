@@ -18,13 +18,17 @@ export class AeroportService{
             result.city);
     }
 
-    findByName (aeroports, txt){
+    async findByName (aeroports, txt){
         if (!txt){
             return aeroports;
         }
-        return aeroports
+        let aeroportResult = aeroports;
+        if (!aeroports){
+            aeroportResult = await this.findAll();
+        }
+        return aeroportResult
             .filter(
-            aeroport=>aeroport.name.toLowerCase().includes(txt.toLowerCase()) ||
+            aeroport=>aeroport.name && aeroport.name.toLowerCase().includes(txt.toLowerCase()) ||
             aeroport.code.toLowerCase().includes(txt.toLowerCase()) ||
             aeroport.city.toLowerCase().includes(txt.toLowerCase())
             );

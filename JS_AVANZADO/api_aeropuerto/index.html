@@ -32,7 +32,7 @@
         const view = new AeroportView();
         const aeroports = await service.findAll();
 
-        view.paintAeroport(aeroports,map);
+        view.paintAeroport(aeroports,map,service);
     })();
 
 </script>

@@ -1,0 +1,13 @@
+name: "dwec-ut3"
+services:
+  node-vue1:
+    image: node:24
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    working_dir: /app
+    user: 1000:1000
+    volumes:
+      - ./primer-ejemplo-vue:/app
+    ports:
+      - "9085:5173"

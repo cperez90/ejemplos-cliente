@@ -1,9 +1,7 @@
-import {AeroportService} from "../service/AeroportService.js";
 
 export class AeroportView{
 
-    paintAeroport(aeroports, map){
-        const service = new AeroportService();
+    paintAeroport(aeroports, map, service){
         const app = document.querySelector('#app');
         app.innerHTML = "";
 
@@ -71,5 +69,39 @@ export class AeroportView{
                 markers[first.code].openPopup();
             }
         });
+    }
+
+    paintTable(aeroports){
+
+    }
+
+    paintMap(aeroports) {
+        const app = document.querySelector("#app");
+
+        const mapDiv = document.createElement('div');
+
+        mapDiv.id="map";
+        mapDiv.style.height='180px';
+        app.appendChild(mapDiv);
+
+        const map = L.map('map').setView([41.3851, 2.1734], 6);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png')
+            .addTo(map);
+
+        for(const aeroport of aeroports){
+            L.marker([aeroport.lat,aeroport.lon]).addTo(map);
+        }
+    }
+
+    paintInput(callBackFilter,aeroports){
+        const app = document.querySelector("#app");
+        const input = document.createElement('input');
+        input.addEventListener('input', async () => {
+           const aeroportsFilters = await callBackFilter(aeroports,this.value);
+           this.paintTable(aeroportsFilters);
+           this.paintMap(aeroportsFilters);
+        });
+        app.appendChild(input);
     }
 }
