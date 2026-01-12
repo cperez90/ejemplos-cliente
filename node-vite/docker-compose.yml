@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     tty: true
     stdin_open: true
-    working_dir: /app
+    working_dir: /app/primer-vue
     user: 1000:1000
     volumes:
       - ./primer-ejemplo-vue:/app
