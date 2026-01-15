@@ -9,15 +9,19 @@ const x = ref('hello world');
 1) Vue actualiza la variable a tod0 el component
  */
 const activeColor = ref('red')
+
+function saluda(x) {
+  alert("Hola " + x)
+}
 </script>
 
 <template>
 <!--<h1 v-if="x==='hola'" :style="{color: activeColor}">{{x}}</h1>-->
 <h1 :class="{vermell: (x === 'hola')}">{{x}}</h1>
 <p v-if="x==='adeu'">Adeu, se ha acabado la clase</p>
-  <template v-for="i in 10">
-    <input v-model="x">
-    <boton :nombre="((x)?x:'Tomeu') + ', Boton rojo a about'" descripcion="Descripcion">
+  <input v-model="x">
+  <template v-for="i in 1">
+    <boton :nombre="((x)?x:'0') + '€'" @pitjar="saluda">
       <p>Esto es parte de un slot</p>
       <table>
         <tr>
@@ -28,7 +32,7 @@ const activeColor = ref('red')
       </table>
       <span>Fin del slot</span>
     </boton>
-    <boton nombre="Pincha si te atreves" />
+    <!--<boton nombre="Pincha si te atreves" />-->
   </template>
 <Header/>
 </template>

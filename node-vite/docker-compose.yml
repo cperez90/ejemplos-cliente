@@ -11,3 +11,15 @@ services:
       - ./primer-ejemplo-vue:/app
     ports:
       - "9085:5173"
+
+  quasar-vue1:
+    image: node:24
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    working_dir: /app/primer-vue
+    user: 1000:1000
+    volumes:
+      - ./primer-ejemplo-vue:/app
+    ports:
+      - "9088:9000"
